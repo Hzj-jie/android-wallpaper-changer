@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.gemini.wallpaper_changer"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="5" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <application android:icon="@drawable/blank">
+        <activity android:name=".WallpaperChangerActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:label="Change Wallpaper"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name=".WallpaperChangerActivity" />
+                <action android:name="android.intent.action.MAIN" /> 
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="wallpaper-changer"
+                      android:host="org.gemini.wallpaper-changer.change"
+                      android:pathPattern=".*" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ClearWallpaperActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:label="Clear Wallpaper"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name=".ClearWallpaperActivity" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="wallpaper-changer"
+                      android:host="org.gemini.wallpaper-changer.clear"
+                      android:pathPattern=".*" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
