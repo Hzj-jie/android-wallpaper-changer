@@ -2,6 +2,7 @@ package org.gemini.wallpaper_changer;
 
 import android.app.WallpaperManager;
 import android.net.Uri;
+import android.os.Build;
 
 public final class WallpaperOffsetsActivity extends WallpaperActivity
 {
@@ -24,12 +25,15 @@ public final class WallpaperOffsetsActivity extends WallpaperActivity
   protected void processUri(WallpaperManager manager, Uri uri)
   {
     debugLog(TAG, "Received Uri " + uri.toString());
-    float x = parseQuery(uri, "x");
-    float y = parseQuery(uri, "y");
-    if (x >= 0 && y >= 0 && (x > 0 || y > 0))
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR_MR1)
     {
-      debugLog(TAG, "Offsets x " + x + ", y " + y);
-      manager.setWallpaperOffsetSteps(x, y);
+      float x = parseQuery(uri, "x");
+      float y = parseQuery(uri, "y");
+      if (x >= 0 && y >= 0 && (x > 0 || y > 0))
+      {
+        debugLog(TAG, "Offsets x " + x + ", y " + y);
+        manager.setWallpaperOffsetSteps(x, y);
+      }
     }
   }
 }
