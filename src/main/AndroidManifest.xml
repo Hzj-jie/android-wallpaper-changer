@@ -11,6 +11,8 @@
         <activity android:name=".WallpaperChangerActivity"
             android:theme="@android:style/Theme.NoDisplay"
             android:label="Change Wallpaper"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -26,6 +28,8 @@
         <activity android:name=".WallpaperOffsetsActivity"
             android:theme="@android:style/Theme.NoDisplay"
             android:label="Set Wallpaper Offsets"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -39,6 +43,8 @@
         <activity android:name=".ClearWallpaperActivity"
             android:theme="@android:style/Theme.NoDisplay"
             android:label="Clear Wallpaper"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
