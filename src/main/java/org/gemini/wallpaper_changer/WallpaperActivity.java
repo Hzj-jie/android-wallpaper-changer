@@ -9,7 +9,13 @@ import android.util.Log;
 
 public abstract class WallpaperActivity extends Activity
 {
+  protected static final boolean LOGGING = false;
   private static final String TAG = WallpaperActivity.class.getSimpleName();
+
+  protected static void debugLog(String TAG, String msg)
+  {
+    if (LOGGING) Log.i(TAG, msg);
+  }
 
   @Override
   protected final void onCreate(Bundle bundle)

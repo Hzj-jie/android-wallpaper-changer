@@ -4,7 +4,6 @@ import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +32,7 @@ public final class WallpaperChangerActivity extends WallpaperActivity
   @Override
   protected void processUri(WallpaperManager manager, Uri uri)
   {
-    Log.i(TAG, "Received Uri " + uri.toString());
+    debugLog(TAG, "Received Uri " + uri.toString());
     List<String> candidates = new ArrayList<>();
     List<String> current;
     current = uri.getQueryParameters("file");
@@ -44,17 +43,24 @@ public final class WallpaperChangerActivity extends WallpaperActivity
       for (String s : current)
         scanFiles(new File(s), candidates);
     }
+    debugLog(TAG, "Totally " + candidates.size() + " files found.");
 
     Random random = new Random();
     while (candidates.size() > 0)
     {
       int index = random.nextInt(candidates.size());
+      debugLog(TAG, "Start to decode file " + candidates.get(index));
       Bitmap bmp = BitmapFactory.decodeFile(candidates.get(index));
+      debugLog(TAG, "Finished decoding file " + candidates.get(index));
       if (bmp != null)
       {
         try
         {
+          debugLog(TAG, "Begin to set wallpaper to " + candidates.get(index));
           manager.setBitmap(bmp);
+          debugLog(TAG,
+                   "Finished changing wallpaper to " + candidates.get(index));
+          debugLog(TAG, candidates.size() + " candidates left.");
           break;
         }
         catch (IOException ex) { candidates.remove(index); }
