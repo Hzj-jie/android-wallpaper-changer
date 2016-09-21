@@ -4,6 +4,7 @@ import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +58,10 @@ public final class WallpaperChangerActivity extends WallpaperActivity
         try
         {
           debugLog(TAG, "Begin to set wallpaper to " + candidates.get(index));
-          manager.setBitmap(bmp);
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            manager.setBitmap(bmp, null, false);
+          else
+            manager.setBitmap(bmp);
           debugLog(TAG,
                    "Finished changing wallpaper to " + candidates.get(index));
           debugLog(TAG, candidates.size() + " candidates left.");
