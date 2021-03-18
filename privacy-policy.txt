@@ -1,3 +1,5 @@
+-- Privacy Policy of Wallpaper Changer (org.gemini.wallpaper_changer) --
+
 This application requires SET_WALLPAPER and READ_EXTERNAL_STORAGE permissions to
 execute its designed functionality, e.g. set the wallpaper from a file on the
 storage. This application does not collect or send any user information for any
