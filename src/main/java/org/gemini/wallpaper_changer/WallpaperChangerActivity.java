@@ -5,12 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.gemini.shared.Ints;
 
 public final class WallpaperChangerActivity extends WallpaperActivity {
   private static final String TAG =
@@ -52,7 +52,10 @@ public final class WallpaperChangerActivity extends WallpaperActivity {
           debugLog(TAG, "Begin to set wallpaper to " + candidates.get(index));
           int result = 0;
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            result = manager.setBitmap(bmp, null, false);
+            result = manager.setBitmap(bmp,
+                                       null,
+                                       false,
+                                       Ints.parseOr(uri.getQueryParameter("which"), 0));
           } else {
             manager.setBitmap(bmp);
             result = 1;
