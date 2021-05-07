@@ -9,34 +9,33 @@ import android.util.Log;
 
 public abstract class WallpaperActivity extends Activity
 {
-  protected static final boolean LOGGING = false;
+  protected static final boolean LOGGING = true;
   private static final String TAG = WallpaperActivity.class.getSimpleName();
 
-  protected static void debugLog(String TAG, String msg)
-  {
+  protected static void debugLog(String TAG, String msg) {
     if (LOGGING) Log.i(TAG, msg);
   }
 
+  protected static void debugLog(String msg) {
+    debugLog(TAG, msg);
+  }
+
   @Override
-  protected final void onCreate(Bundle bundle)
-  {
+  protected final void onCreate(Bundle bundle) {
     super.onCreate(bundle);
-    if (getIntent() == null)
-    {
+    if (getIntent() == null) {
       Log.e(TAG, "No intent attached.");
       finish();
       return;
     }
     Uri uri = getIntent().getData();
-    if (uri == null)
-    {
+    if (uri == null) {
       Log.e(TAG, "No uri attached.");
       finish();
       return;
     }
     WallpaperManager manager = WallpaperManager.getInstance(this);
-    if (manager == null)
-    {
+    if (manager == null) {
       Log.e(TAG, "Cannot retrieve WallpaperManager.");
       finish();
       return;
@@ -46,8 +45,7 @@ public abstract class WallpaperActivity extends Activity
   }
 
   @Override
-  protected final void onDestroy()
-  {
+  protected final void onDestroy() {
     super.onDestroy();
     Process.killProcess(Process.myPid());
     System.exit(0);

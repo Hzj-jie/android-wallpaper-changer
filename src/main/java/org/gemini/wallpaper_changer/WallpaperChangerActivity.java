@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public final class WallpaperChangerActivity extends WallpaperActivity {
   // Uri format = ?file={file} or ?folder={folder}
   @Override
   protected void processUri(WallpaperManager manager, Uri uri) {
-    debugLog(TAG, "Received Uri " + uri.toString());
+    debugLog("Received Uri " + uri.toString());
     List<String> candidates = new ArrayList<>();
     List<String> current;
     current = uri.getQueryParameters("file");
@@ -39,40 +40,41 @@ public final class WallpaperChangerActivity extends WallpaperActivity {
       for (String s : current)
         scanFiles(new File(s), candidates);
     }
-    debugLog(TAG, "Totally " + candidates.size() + " files found.");
+    debugLog("Totally " + candidates.size() + " files found.");
 
     Random random = new Random();
     while (candidates.size() > 0) {
       int index = random.nextInt(candidates.size());
-      debugLog(TAG, "Start to decode file " + candidates.get(index));
+      debugLog("Start to decode file " + candidates.get(index));
       Bitmap bmp = BitmapFactory.decodeFile(candidates.get(index));
-      debugLog(TAG, "Finished decoding file " + candidates.get(index));
-      if (bmp != null) {
-        try {
-          debugLog(TAG, "Begin to set wallpaper to " + candidates.get(index));
-          int result = 0;
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            result = manager.setBitmap(bmp,
-                                       null,
-                                       false,
-                                       Ints.parseOr(uri.getQueryParameter("which"), 0));
-          } else {
-            manager.setBitmap(bmp);
-            result = 1;
-          }
-          if (result == 0) {
-            debugLog(TAG, "Failed to set wallpaper to " +
-                          candidates.get(index));
-            candidates.remove(index);
-          } else {
-            debugLog(TAG,
-                     "Finished changing wallpaper to " + candidates.get(index));
-            debugLog(TAG, candidates.size() + " candidates left.");
-            break;
-          }
+      debugLog("Finished decoding file " + candidates.get(index));
+      if (bmp == null) {
+        candidates.remove(index);
+        continue;
+      }
+      try {
+        debugLog("Begin to set wallpaper to " + candidates.get(index));
+        int result = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+          result = manager.setBitmap(bmp,
+                                     null,
+                                     false,
+                                     Ints.parseOr(uri.getQueryParameter("which"), 0));
+        } else {
+          manager.setBitmap(bmp);
+          result = 1;
         }
-        catch (IOException ex) { candidates.remove(index); }
-      } else {
+        if (result == 0) {
+          debugLog("Failed to set wallpaper to " + candidates.get(index));
+          candidates.remove(index);
+        } else {
+          debugLog("Finished changing wallpaper to " + candidates.get(index));
+          debugLog(candidates.size() + " candidates left.");
+          break;
+        }
+      }
+      catch (IOException ex) {
+        Log.e(TAG, candidates.get(index) + ": " + ex);
         candidates.remove(index);
       }
     }
